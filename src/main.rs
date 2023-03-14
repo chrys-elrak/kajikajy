@@ -1,10 +1,26 @@
 #![allow(dead_code, unused)]
 mod calculator;
-fn main() {
-    let token = calculator::Calculator::parse("1 / 2 ");
-    // println!("{:?}", token.unwrap());
-    let expr = calculator::Calculator::expression(token.unwrap());
-    // println!("{expr:?}");
-    let value = calculator::Calculator::evaluate(expr);
-    println!("{:?}", value.unwrap().unwrap());
+use crate::calculator::Calculator;
+
+fn main() -> Result<(),  Box<dyn std::error::Error>> {
+    loop {
+        let mut input = String::new();
+        match std::io::stdin().read_line(&mut input) {
+            Ok(_) => {
+                let token = Calculator::parse(input);
+                if token.is_err() {
+                    println!("{:?}", token.err().unwrap());
+                    continue;
+                }
+                let expr = Calculator::expression(token.unwrap());
+                if let Some(v) = Calculator::evaluate(expr) {
+                    println!("{:?}", v.unwrap());
+                }
+            }
+            Err(_) => {
+                println!("Error reading input");
+                continue;
+            }
+        }
+    }
 }

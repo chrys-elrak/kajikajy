@@ -56,7 +56,6 @@ impl Calculator {
                         return Err(Error::InvalidParenthesis);
                     }
                 }
-                ' ' => {}
                 '\n' => {}
                 _ => return Err(Error::InvalidToken),
             }
